@@ -1,5 +1,5 @@
-using System.Diagnostics;
 using LibreHardwareMonitor.Hardware;
+using Timer = System.Windows.Forms.Timer;
 
 namespace TdpDisplay;
 
@@ -9,7 +9,7 @@ static class Program
     ///  The main entry point for the application.
     /// </summary>
     [STAThread]
-    static void Main()
+    private static void Main()
     {
         ApplicationConfiguration.Initialize();
 
@@ -33,7 +33,7 @@ static class Program
         var cpuWMax = new double?();
         var gpuWMax = new double?();
 
-        var timer = new System.Windows.Forms.Timer { Interval = 3000 };
+        var timer = new Timer { Interval = 3000 };
         timer.Tick += (sender, e) =>
         {
             var cpuW = GetPower(computer, HardwareType.Cpu, "Package");
