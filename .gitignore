@@ -3,3 +3,6 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
+
+# Personal Junie notes & configuration - not to be pushed
+.junie/
