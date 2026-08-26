@@ -4,12 +4,13 @@ using Timer = System.Windows.Forms.Timer;
 
 namespace TdpDisplay;
 
-/**
- * This class is responsible for updating the tray icon and context menu.
- * <p>
- * It uses the LHM library to read the power consumption of the CPU and GPU.
- * Also, it uses the Windows API to read the battery life.
- */
+/// <summary>
+/// Responsible for updating the tray icon and context menu.
+/// </summary>
+/// <remarks>
+/// Uses the LHM library to read the power consumption of the CPU and GPU.
+/// Also, it uses the Windows API to read the battery life.
+/// </remarks>
 public sealed class TrayController : IDisposable
 {
     private const int UpdateIntervalMs = 3000;
@@ -18,6 +19,7 @@ public sealed class TrayController : IDisposable
     private readonly ContextMenuStrip _contextStrip;
     private readonly Computer _computer;
     private readonly Timer _timer;
+    private readonly TdpDatabase _db;
 
     private double? _cpuWMax;
     private double? _gpuWMax;
@@ -25,6 +27,8 @@ public sealed class TrayController : IDisposable
 
     public TrayController()
     {
+        _db = new TdpDatabase();
+        _db.Initialize();
         _icon = new NotifyIcon
         {
             Visible = true,
@@ -54,6 +58,7 @@ public sealed class TrayController : IDisposable
     {
         var cpuW = GetPower(HardwareType.Cpu, "Package");
         var gpuW = GetPower(HardwareType.GpuNvidia, "Package");
+        _db.SaveReading(cpuW ?? -1, gpuW ?? -1);
 
         if (gpuW is > 0 and < 200) _gpuWValidated = gpuW;
 
