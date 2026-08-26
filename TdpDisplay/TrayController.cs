@@ -58,7 +58,7 @@ public sealed class TrayController : IDisposable
     {
         var cpuW = GetPower(HardwareType.Cpu, "Package");
         var gpuW = GetPower(HardwareType.GpuNvidia, "Package");
-        _db.SaveReading(cpuW ?? -1, gpuW ?? -1);
+        _db.SaveReading(Math.Round(cpuW ?? -1, 2), Math.Round(gpuW ?? -1, 2));
 
         if (gpuW is > 0 and < 200) _gpuWValidated = gpuW;
 
